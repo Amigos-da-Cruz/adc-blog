@@ -18,7 +18,7 @@ const body = article?.body ? renderBody(article.body) : '';
       <ArticleHeader tipo={article.kind} categoria={article.category} titulo={article.title} entrada={article.introduction || article.excerpt} autoria={byline} />
       <div class="article-page__body adc-prose" set:html={body} />
       {article.kind === 'noticia' && article.sources && article.sources.length > 0 && <Sources sources={article.sources} />}
-      <Comments articleId={article.id} />
+      <Comments slug={article.slug} />
       <div class="article-page__end"><Divider /><a href="/">← Voltar às publicações</a></div>
     </article>
   </BaseLayout>

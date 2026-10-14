@@ -3,7 +3,11 @@
 interface ImportMetaEnv {
   readonly SANITY_PROJECT_ID?: string;
   readonly SANITY_DATASET?: string;
-  readonly PUBLIC_HYVOR_WEBSITE_ID?: string;
+  readonly MONGODB_URI?: string;
+  readonly MONGODB_DB?: string;
+  readonly COMMENTS_ADMIN_TOKEN?: string;
+  readonly TURNSTILE_SECRET_KEY?: string;
+  readonly PUBLIC_TURNSTILE_SITE_KEY?: string;
   readonly PUBLIC_SITE_URL?: string;
   readonly PUBLIC_SANITY_STUDIO_URL?: string;
 }

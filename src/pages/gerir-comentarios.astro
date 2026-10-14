@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CommentsAdmin } from '../components/CommentsAdmin';
+
+export const prerender = false;
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+Astro.response.headers.set('Cache-Control', 'no-store');
+---
+
+<BaseLayout title="Gerir comentários · Amigos da Cruz">
+  <div class="page-container page-heading">
+    <h1>Gerir comentários</h1>
+    <p>Responde aos leitores e oculta mensagens quando necessário.</p>
+  </div>
+  <div class="page-container comments-admin-page">
+    <CommentsAdmin client:load />
+  </div>
+</BaseLayout>

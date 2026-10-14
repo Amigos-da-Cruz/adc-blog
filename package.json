@@ -10,18 +10,20 @@
     "check": "astro check"
   },
   "dependencies": {
-    "@amigos-da-cruz/adc-design-system": "git+https://github.com/Amigos-da-Cruz/adc-design-system.git#v0.1.1",
+    "@amigos-da-cruz/adc-design-system": "github:Amigos-da-Cruz/adc-design-system#v0.2.0",
     "@astrojs/react": "^5.0.7",
     "@astrojs/vercel": "^11.0.14",
     "@portabletext/to-html": "^3.0.0",
     "@sanity/client": "^7.0.0",
     "@sanity/image-url": "^2.1.1",
     "astro": "^7.3.8",
+    "mongodb": "^6.21.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@types/node": "^22.20.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "typescript": "^6.0.0"

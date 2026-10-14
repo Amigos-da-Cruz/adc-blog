@@ -8,6 +8,7 @@
     ".vercel"
   ],
   "compilerOptions": {
+    "types": ["node"],
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "target": "ESNext",

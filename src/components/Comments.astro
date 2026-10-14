@@ -1,21 +1,16 @@
 ---
+import { CommentsApp } from './CommentsApp';
+
 interface Props {
-  articleId: string;
+  slug: string;
 }
 
-const { articleId } = Astro.props;
-const websiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
+const { slug } = Astro.props;
+const configured = Boolean(import.meta.env.MONGODB_URI && import.meta.env.MONGODB_DB && import.meta.env.COMMENTS_ADMIN_TOKEN && import.meta.env.TURNSTILE_SECRET_KEY && import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
 ---
 
-<section id="comentarios" class="article-comments" aria-labelledby="comments-title">
-  <h2 id="comments-title">Comentários</h2>
-  {websiteId ? (
-    <>
-      <p class="article-comments__intro">Participa na conversa ou responde a outros leitores.</p>
-      <hyvor-talk-comments website-id={websiteId} page-id={articleId} page-language="pt"></hyvor-talk-comments>
-      <script is:inline async type="module" src="https://talk.hyvor.com/embed/embed.js"></script>
-    </>
-  ) : (
-    <p class="article-comments__intro">Os comentários estarão disponíveis em breve.</p>
+<section id="comentarios" class="article-comments" aria-label="Comentários dos leitores">
+  {configured ? <CommentsApp slug={slug} siteKey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY!} client:load /> : (
+    <><h2>Comentários</h2><p class="article-comments__intro">Os comentários estarão disponíveis em breve.</p></>
   )}
 </section>
