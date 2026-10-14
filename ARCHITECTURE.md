@@ -10,15 +10,16 @@ Reproduzir a identidade editorial dos Amigos da Cruz num blogue de notícias e c
 Editor → Sanity Studio → Sanity Content Lake → Astro (Vercel Function) → leitor
                                        ↘ imagens/CDN (quando necessário)
 GitHub adc-design-system → componentes e CSS → build Astro na Vercel
+Leitor ↔ Hyvor Talk ↔ comentários e respostas no artigo
 ```
 
 ## Decisões implementadas
 
 - **Astro 7 + Vercel, `output: server`:** a página inicial, os arquivos e cada artigo consultam os conteúdos publicados no Sanity a cada pedido. Não é necessário webhook para atualizar HTML após uma publicação.
-- **Sanity:** Studio independente em `studio/`, com tipos `author`, `article` e `comment`. O artigo distingue `noticia` de `comentario`; uma notícia precisa de fontes. Rascunhos não são devolvidos ao site público.
+- **Sanity:** Studio independente em `studio/`, com tipos `author` e `article`. O artigo distingue `noticia` de `comentario`; uma notícia precisa de fontes. Rascunhos não são devolvidos ao site público.
 - **Design system:** React renderizado pelo Astro sem hidratação no cliente; CSS e fontes do pacote ADC. A dependência aponta para a tag pública Git `v0.1.1`, pois o registo npm do GitHub exige autenticação mesmo para consulta. Quando houver token seguro de leitura na Vercel, pode passar para a versão semântica do GitHub Packages.
 - **Páginas:** `/`, `/noticias`, `/comentarios`, `/artigos/[slug]`. Conteúdo em português de Portugal, sem imagens decorativas de notícias. Fontes aparecem no fim das notícias.
-- **Segurança:** frontend usa leitura pública do dataset; artigos são escritos no Studio e comentários de leitores entram como rascunhos através de uma função Vercel com token de servidor e validação Turnstile. Variáveis `.env` ficam fora do Git. A data de publicação filtra conteúdos futuros.
+- **Segurança:** frontend usa leitura pública do dataset; artigos são escritos no Studio. Comentários e respostas são tratados pelo Hyvor Talk, fora do Sanity. Variáveis `.env` ficam fora do Git. A data de publicação filtra conteúdos futuros.
 
 ## Publicação e operação
 

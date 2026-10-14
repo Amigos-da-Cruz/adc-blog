@@ -4,14 +4,12 @@ import { renderBody } from '../../lib/renderBody';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Sources } from '../../components/Sources';
 import Comments from '../../components/Comments.astro';
-import { formatDate, getArticle, getComments } from '../../lib/content';
+import { formatDate, getArticle } from '../../lib/content';
 
 const article = await getArticle(Astro.params.slug ?? '');
 if (!article) Astro.response.status = 404;
 const byline = article ? [article.author, formatDate(article.publishedAt)].filter(Boolean).join(' · ') : '';
 const body = article?.body ? renderBody(article.body) : '';
-const comments = article ? await getComments(article.id) : [];
-const commentsEnabled = Boolean(import.meta.env.SANITY_WRITE_TOKEN && import.meta.env.TURNSTILE_SECRET_KEY && import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
 ---
 
 {article ? (
@@ -20,7 +18,7 @@ const commentsEnabled = Boolean(import.meta.env.SANITY_WRITE_TOKEN && import.met
       <ArticleHeader tipo={article.kind} categoria={article.category} titulo={article.title} entrada={article.introduction || article.excerpt} autoria={byline} />
       <div class="article-page__body adc-prose" set:html={body} />
       {article.kind === 'noticia' && article.sources && article.sources.length > 0 && <Sources sources={article.sources} />}
-      <Comments comments={comments} slug={article.slug} status={Astro.url.searchParams.get('comment')} siteKey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY} enabled={commentsEnabled} />
+      <Comments articleId={article.id} />
       <div class="article-page__end"><Divider /><a href="/">← Voltar às publicações</a></div>
     </article>
   </BaseLayout>

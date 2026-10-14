@@ -1,52 +1,21 @@
 ---
-import type { ReaderComment } from '../lib/content';
-import { formatDate } from '../lib/content';
-
 interface Props {
-  comments: ReaderComment[];
-  slug: string;
-  status?: string | null;
-  siteKey?: string;
-  enabled: boolean;
+  articleId: string;
 }
 
-const { comments, slug, status, siteKey, enabled } = Astro.props;
-const feedback: Record<string, string> = {
-  received: 'Comentário enviado. Ficará visível após aprovação.',
-  invalid: 'Confirma o nome e o comentário e tenta novamente.',
-  challenge: 'Não foi possível validar a proteção contra spam. Tenta novamente.',
-  error: 'Não foi possível enviar o comentário. Tenta novamente mais tarde.',
-};
+const { articleId } = Astro.props;
+const websiteId = import.meta.env.PUBLIC_HYVOR_WEBSITE_ID;
 ---
 
 <section id="comentarios" class="article-comments" aria-labelledby="comments-title">
   <h2 id="comments-title">Comentários</h2>
-  <p class="article-comments__intro">Os comentários são revistos antes de aparecerem no blogue.</p>
-  {status && feedback[status] && <p class="article-comments__feedback" role="status">{feedback[status]}</p>}
-  {comments.length ? (
-    <ol class="article-comments__list">
-      {comments.map((comment) => (
-        <li>
-          <div class="article-comments__meta"><strong>{comment.name}</strong><time datetime={comment.submittedAt}>{formatDate(comment.submittedAt)}</time></div>
-          <p>{comment.message}</p>
-        </li>
-      ))}
-    </ol>
-  ) : <p class="article-comments__empty">Ainda não há comentários publicados.</p>}
-
-  {enabled && siteKey ? (
-    <form class="comment-form" method="post" action="/api/comments">
-      <h3>Deixar um comentário</h3>
-      <input type="hidden" name="slug" value={slug} />
-      <input type="hidden" name="startedAt" value={Date.now()} />
-      <div class="comment-form__trap" aria-hidden="true"><label>Deixa este campo vazio <input type="text" name="website" tabindex="-1" autocomplete="off" /></label></div>
-      <label for="comment-name">Nome</label>
-      <input id="comment-name" name="name" type="text" minlength="2" maxlength="80" required autocomplete="name" />
-      <label for="comment-message">Comentário</label>
-      <textarea id="comment-message" name="message" rows="6" minlength="3" maxlength="2000" required></textarea>
-      <div class="cf-turnstile" data-sitekey={siteKey}></div>
-      <button type="submit">Enviar para aprovação</button>
-    </form>
-  ) : <p class="article-comments__empty">O envio de comentários estará disponível em breve.</p>}
+  {websiteId ? (
+    <>
+      <p class="article-comments__intro">Participa na conversa ou responde a outros leitores.</p>
+      <hyvor-talk-comments website-id={websiteId} page-id={articleId} page-language="pt"></hyvor-talk-comments>
+      <script is:inline async type="module" src="https://talk.hyvor.com/embed/embed.js"></script>
+    </>
+  ) : (
+    <p class="article-comments__intro">Os comentários estarão disponíveis em breve.</p>
+  )}
 </section>
-{enabled && siteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}

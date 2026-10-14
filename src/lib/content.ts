@@ -27,13 +27,6 @@ export interface Article extends ArticleSummary {
   sources?: ArticleSource[];
 }
 
-export interface ReaderComment {
-  id: string;
-  name: string;
-  message: string;
-  submittedAt: string;
-}
-
 const projectId = import.meta.env.SANITY_PROJECT_ID;
 const dataset = import.meta.env.SANITY_DATASET || 'production';
 
@@ -70,14 +63,6 @@ export async function getArticle(slug: string): Promise<Article | null> {
   );
 }
 
-export async function getComments(articleId: string): Promise<ReaderComment[]> {
-  if (!client) return [];
-  return client.fetch(
-    `*[_type == "comment" && article._ref == $articleId]
-      | order(submittedAt asc) { "id": _id, name, message, submittedAt }`,
-    { articleId },
-  );
-}
 export function formatDate(value: string): string {
   return new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Lisbon' }).format(new Date(value));
 }

@@ -27,15 +27,17 @@ No campo **Corpo**, é possível inserir parágrafos, ligações, imagens e bloc
 
 ## Comentários dos leitores
 
-Os comentários entram no Sanity como **rascunhos** e só aparecem no blogue depois de serem publicados por um editor no Studio, na lista **Comentário de leitor**. O formulário recolhe apenas nome e comentário.
+Os artigos continuam a ser editados no Sanity. As conversas são geridas pelo [Hyvor Talk](https://talk.hyvor.com/), que permite comentários como convidado, respostas entre leitores e respostas da equipa do blogue. O blogue não guarda os comentários nem precisa de um token de escrita do Sanity. A publicação pode ser imediata; manter a pré moderação desligada na configuração do Hyvor Talk. Os filtros de spam podem continuar ativos.
 
-Para ativar o envio público, criar no Sanity um **project robot token** com permissão de escrita (em **Settings → API → Tokens**) e um widget [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/get-started/widget-management/dashboard/) para o domínio do blogue. Guardar estas variáveis nas definições do projeto Vercel, nos ambientes onde os comentários devem funcionar:
+1. Criar um website no [Hyvor Talk Console](https://talk.hyvor.com/console/) para o domínio do blogue e copiar o **Website ID**.
+2. Em **Settings → Embed → Configuration**, deixar a **Pre-Moderation** global desligada. Em **Pages**, verificar que não está ativa para artigos individuais. Ativar comentários de convidados em **Settings → Embed → Configuration**, se essa opção estiver desligada.
+3. Configurar o idioma do website como **Portuguese (Portugal)**. O embed também pede `pt` por artigo.
+4. Definir `PUBLIC_HYVOR_WEBSITE_ID` no `.env` local e nas variáveis de ambiente da Vercel (Production e, se necessário, Preview). Fazer um novo deploy. O Website ID é público; não é uma chave secreta.
+5. Para responder a perguntas, iniciar sessão com a conta proprietária no Console → Comments ou no próprio blogue. Configurar **Moderator Alias** e **Moderator Badge** para identificar as respostas oficiais. O Hyvor envia notificações por email aos leitores que tenham indicado um endereço de email.
 
-- `SANITY_WRITE_TOKEN`: token do Sanity, apenas no servidor.
-- `PUBLIC_TURNSTILE_SITE_KEY`: chave pública do widget.
-- `TURNSTILE_SECRET_KEY`: chave secreta do widget, apenas no servidor.
+Cada conversa usa o ID estável do artigo no Sanity; mudar o slug não separa os comentários anteriores. Sem `PUBLIC_HYVOR_WEBSITE_ID`, o blogue mostra apenas uma mensagem de configuração pendente.
 
-Após alterar as variáveis, fazer um novo deploy. Para desenvolvimento local, usar as mesmas variáveis no `.env` da raiz e um widget que aceite `localhost` (ou as chaves de teste do Turnstile). Sem as três variáveis, os comentários aprovados continuam visíveis e o formulário de envio fica oculto. O servidor valida o Turnstile antes de criar o rascunho; nunca colocar o token ou a chave secreta em variáveis com prefixo `PUBLIC_`.
+O Hyvor Talk tem um período de avaliação e planos pagos; consultar o [preçário atual](https://talk.hyvor.com/pricing) antes de ativar a subscrição. Rever a política de privacidade do blogue para informar os leitores de que nome, email quando fornecido e conteúdo do comentário são tratados pelo Hyvor Talk.
 
 ## Vercel
 

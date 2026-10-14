@@ -54,23 +54,7 @@ body { margin: 0; }
 .article-instagram a { display: inline-block; margin-top: 12px; font: 500 15px/22px var(--font-support); }
 .article-comments { max-width: var(--measure-text); margin: 76px auto 0; padding: 0 24px; }
 .article-comments h2 { margin: 0 0 14px; font: 700 clamp(30px, 3vw, 42px)/1.2 var(--font-display); }
-.article-comments__intro, .article-comments__empty { color: var(--ink-muted); font: 400 16px/26px var(--font-text); }
-.article-comments__feedback { padding: 14px 18px; border-left: 3px solid var(--brand); background: var(--surface-raised); }
-.article-comments__list { list-style: none; margin: 32px 0 40px; padding: 0; }
-.article-comments__list li { padding: 22px 0; border-top: 1px solid var(--line); }
-.article-comments__list li:last-child { border-bottom: 1px solid var(--line); }
-.article-comments__meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font: 500 14px/20px var(--font-support); }
-.article-comments__meta time { color: var(--ink-muted); }
-.article-comments__list p { margin: 12px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 400 16px/26px var(--font-text); }
-.comment-form { display: grid; gap: 10px; margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--line); }
-.comment-form h3 { margin: 0 0 12px; font: 700 25px/32px var(--font-display); }
-.comment-form label { font: 500 14px/20px var(--font-support); }
-.comment-form input:not([type="hidden"]), .comment-form textarea { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: 400 16px/24px var(--font-text); }
-.comment-form textarea { resize: vertical; }
-.comment-form input:focus-visible, .comment-form textarea:focus-visible, .comment-form button:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
-.comment-form .cf-turnstile { margin-top: 10px; }
-.comment-form button { justify-self: start; margin-top: 10px; padding: 12px 20px; border: 0; background: var(--brand); color: white; font: 600 14px/20px var(--font-support); cursor: pointer; }
-.comment-form__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.article-comments__intro { color: var(--ink-muted); font: 400 16px/26px var(--font-text); }
 .article-page__end { max-width: var(--measure-text); margin: 50px auto 0; padding-inline: 24px; }
 .article-page__end a { display: inline-block; margin-top: 30px; font: 500 15px/20px var(--font-support); }
 .site-footer { border-top: 1px solid var(--line); background: var(--surface-raised); }
