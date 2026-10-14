@@ -21,9 +21,17 @@ export interface ArticleSource {
 }
 
 export interface Article extends ArticleSummary {
+  id: string;
   introduction?: string;
   body?: Parameters<typeof toHTML>[0];
   sources?: ArticleSource[];
+}
+
+export interface ReaderComment {
+  id: string;
+  name: string;
+  message: string;
+  submittedAt: string;
 }
 
 const projectId = import.meta.env.SANITY_PROJECT_ID;
@@ -56,12 +64,20 @@ export async function getArticle(slug: string): Promise<Article | null> {
   if (!client) return null;
   return client.fetch(
     `*[_type == "article" && slug.current == $slug && defined(publishedAt) && publishedAt <= now()][0] {
-      ${summaryFields}, introduction, body, sources[]{title, publisher, date, url}
+      "id": _id, ${summaryFields}, introduction, body, sources[]{title, publisher, date, url}
     }`,
     { slug },
   );
 }
 
+export async function getComments(articleId: string): Promise<ReaderComment[]> {
+  if (!client) return [];
+  return client.fetch(
+    `*[_type == "comment" && article._ref == $articleId]
+      | order(submittedAt asc) { "id": _id, name, message, submittedAt }`,
+    { articleId },
+  );
+}
 export function formatDate(value: string): string {
   return new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Lisbon' }).format(new Date(value));
 }

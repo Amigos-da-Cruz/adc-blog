@@ -23,6 +23,20 @@ Sem `SANITY_PROJECT_ID`, o site mostra o estado de arquivo vazio. Não cria not�
 
 Os artigos publicados aparecem no blogue na visita seguinte, sem rebuild. Notícias exigem pelo menos uma fonte no formulário editorial.
 
+No campo **Corpo**, é possível inserir parágrafos, ligações, imagens e blocos **Publicação do Instagram**. Cada imagem exige uma descrição alternativa; legenda e crédito são opcionais. O bloco do Instagram aceita ligações HTTPS para publicações e reels e mostra uma ligação para abrir a publicação original.
+
+## Comentários dos leitores
+
+Os comentários entram no Sanity como **rascunhos** e só aparecem no blogue depois de serem publicados por um editor no Studio, na lista **Comentário de leitor**. O formulário recolhe apenas nome e comentário.
+
+Para ativar o envio público, criar no Sanity um **project robot token** com permissão de escrita (em **Settings → API → Tokens**) e um widget [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/get-started/widget-management/dashboard/) para o domínio do blogue. Guardar estas variáveis nas definições do projeto Vercel, nos ambientes onde os comentários devem funcionar:
+
+- `SANITY_WRITE_TOKEN`: token do Sanity, apenas no servidor.
+- `PUBLIC_TURNSTILE_SITE_KEY`: chave pública do widget.
+- `TURNSTILE_SECRET_KEY`: chave secreta do widget, apenas no servidor.
+
+Após alterar as variáveis, fazer um novo deploy. Para desenvolvimento local, usar as mesmas variáveis no `.env` da raiz e um widget que aceite `localhost` (ou as chaves de teste do Turnstile). Sem as três variáveis, os comentários aprovados continuam visíveis e o formulário de envio fica oculto. O servidor valida o Turnstile antes de criar o rascunho; nunca colocar o token ou a chave secreta em variáveis com prefixo `PUBLIC_`.
+
 ## Vercel
 
 Importar `Amigos-da-Cruz/adc-blog` na Vercel com a diretoria raiz do projeto. A Vercel deteta Astro; manter `npm run build` como comando de build. Definir `SANITY_PROJECT_ID`, `SANITY_DATASET=production` e `PUBLIC_SITE_URL` com o domínio final. A aplicação usa o adaptador `@astrojs/vercel` e renderização no servidor.
