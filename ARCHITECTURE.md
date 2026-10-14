@@ -22,7 +22,7 @@ GitHub adc-design-system → componentes e CSS → build Astro na Vercel
 
 ## Publicação e operação
 
-1. Criar o projeto Sanity e publicar o Studio; dar acesso aos editores.
+1. Usar o projeto Sanity `6txkocdk` com dataset `production`, publicar o Studio e dar acesso aos editores.
 2. Definir `SANITY_PROJECT_ID` e `SANITY_DATASET` na Vercel e importar este repositório. Definir `PUBLIC_SITE_URL` depois de atribuir o domínio.
 3. Criar um autor, um artigo de teste com fontes e validar o percurso Studio → página pública → arquivo.
 4. Configurar o domínio final, redirecionamentos necessários e monitorização de erros na Vercel.
@@ -37,4 +37,4 @@ GitHub adc-design-system → componentes e CSS → build Astro na Vercel
 
 ## Limites atuais
 
-Não existe ainda projeto Sanity nem projeto Vercel ligado a este repositório. Sem `SANITY_PROJECT_ID`, o site compila e mostra arquivos vazios. A publicação e as permissões dos editores dependem da criação das contas e dos projetos nesses serviços.
+O projeto Sanity `6txkocdk` já existe, mas ainda não há um projeto Vercel ligado a este repositório. Sem `SANITY_PROJECT_ID`, o site compila e mostra arquivos vazios. A publicação do Studio e as permissões dos editores dependem da autenticação no Sanity.
