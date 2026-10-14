@@ -18,6 +18,7 @@ body { margin: 0; }
 .hero h1 { margin: 20px 0 30px; max-width: 790px; color: var(--ink); font: 700 clamp(44px, 5.2vw, 76px)/1.08 var(--font-display); letter-spacing: -.02em; }
 .hero h1 em { color: var(--brand); font-weight: 500; }
 .hero__copy > p { max-width: 590px; margin: 0; font: 400 clamp(17px, 1.5vw, 20px)/1.7 var(--font-text); color: var(--ink-muted); }
+.hero__copy > p a, .hero__aside-foot a { color: inherit; text-underline-offset: 3px; }
 .hero__link { display: inline-flex; align-items: center; gap: 28px; margin-top: 34px; padding: 0 0 10px; border-bottom: 2px solid var(--brand); color: var(--brand); text-decoration: none; font: 500 15px/20px var(--font-support); }
 .hero__link span { font-size: 22px; line-height: 16px; }
 .hero__aside { position: relative; align-self: stretch; min-height: 340px; display: flex; flex-direction: column; justify-content: center; padding: clamp(30px, 4vw, 52px); border-top: 3px solid var(--brand); background: var(--surface-raised); }
