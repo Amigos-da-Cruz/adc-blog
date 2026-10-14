@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleListing from '../components/ArticleListing.astro';
+import { getArticles } from '../lib/content';
+
+const articles = await getArticles();
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="hero__copy">
+      <span class="adc-eyebrow">Amigos da Cruz · Blogue</span>
+      <h1>Escrever com clareza.<br /><em>Ler com critério.</em></h1>
+      <p>Notícias e comentários sobre a vida da Igreja, com atenção à origem dos factos e à precisão das palavras.</p>
+      <a class="hero__link" href="#artigos">Ler as publicações <span aria-hidden="true">↗</span></a>
+    </div>
+    <aside class="hero__aside" aria-label="Critério editorial">
+      <span class="adc-eyebrow">Critério editorial</span>
+      <p>Uma notícia identifica as suas fontes. Um comentário assume-se como comentário. A tradição piedosa distingue-se do facto documentado.</p>
+      <div class="hero__aside-foot">Rigor no que se afirma. Sobriedade no modo de o dizer.</div>
+    </aside>
+  </section>
+
+  <div id="artigos" class="page-container">
+    <ArticleListing articles={articles.slice(0, 9)} heading="Publicações recentes" empty="Ainda não há artigos publicados. O arquivo ficará disponível aqui." />
+    <div class="browse-links">
+      <a href="/noticias">Todas as notícias <span aria-hidden="true">→</span></a>
+      <a href="/comentarios">Todos os comentários <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</BaseLayout>

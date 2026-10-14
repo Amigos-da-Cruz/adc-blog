@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleListing from '../components/ArticleListing.astro';
+import { getArticles } from '../lib/content';
+
+const articles = await getArticles('noticia');
+---
+
+<BaseLayout title="Notícias · Amigos da Cruz" description="Notícias dos Amigos da Cruz, acompanhadas das respetivas fontes.">
+  <header class="page-heading page-container">
+    <span class="adc-eyebrow">Arquivo</span>
+    <h1>Notícias</h1>
+    <p>Factos apresentados com contexto e indicação das fontes.</p>
+  </header>
+  <div class="page-container"><ArticleListing articles={articles} heading="Todas as notícias" empty="Ainda não há notícias publicadas." /></div>
+</BaseLayout>

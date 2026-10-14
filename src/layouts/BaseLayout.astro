@@ -1,0 +1,57 @@
+---
+import { Logo } from '@amigos-da-cruz/adc-design-system';
+import '@amigos-da-cruz/adc-design-system/style.css';
+import '../styles/site.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Blogue · Amigos da Cruz',
+  description = 'Notícias e comentários dos Amigos da Cruz, com atenção às fontes e à tradição da Igreja.',
+} = Astro.props;
+const current = Astro.url.pathname;
+const baseUrl = import.meta.env.PUBLIC_SITE_URL;
+const canonical = baseUrl ? new URL(current, baseUrl).toString() : undefined;
+---
+
+<!doctype html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="adc site-shell" data-theme="claro">
+      <header class="site-header">
+        <div class="site-header__inner">
+          <a class="site-brand" href="/" aria-label="Amigos da Cruz — página inicial">
+            <Logo largura={48} alt="" />
+            <span><strong>AMIGOS DA CRUZ</strong><small>Blogue</small></span>
+          </a>
+          <nav class="site-nav" aria-label="Navegação principal">
+            <a href="/" aria-current={current === '/' ? 'page' : undefined}>Início</a>
+            <a href="/noticias" aria-current={current.startsWith('/noticias') ? 'page' : undefined}>Notícias</a>
+            <a href="/comentarios" aria-current={current.startsWith('/comentarios') ? 'page' : undefined}>Comentários</a>
+          </nav>
+        </div>
+      </header>
+      <main id="conteudo"><slot /></main>
+      <footer class="site-footer">
+        <div class="site-footer__inner">
+          <div class="site-footer__brand"><Logo largura={36} alt="" /><span>AMIGOS DA CRUZ</span></div>
+          <p>Factos, fontes e reflexão em português de Portugal.</p>
+          <div class="site-footer__links">
+            {import.meta.env.PUBLIC_SANITY_STUDIO_URL && <a href={import.meta.env.PUBLIC_SANITY_STUDIO_URL}>Área editorial</a>}
+            <a href="/">Voltar ao início ↑</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

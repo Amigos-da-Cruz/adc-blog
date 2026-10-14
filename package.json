@@ -1,0 +1,33 @@
+{
+  "name": "adc-blog",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@amigos-da-cruz/adc-design-system": "git+https://github.com/Amigos-da-Cruz/adc-design-system.git#v0.1.1",
+    "@astrojs/react": "^5.0.7",
+    "@astrojs/vercel": "^11.0.14",
+    "@portabletext/to-html": "^3.0.0",
+    "@sanity/client": "^7.0.0",
+    "astro": "^7.3.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^6.0.0"
+  },
+  "overrides": {
+    "@vercel/routing-utils": {
+      "path-to-regexp": "6.3.0"
+    }
+  }
+}

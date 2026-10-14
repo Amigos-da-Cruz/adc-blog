@@ -1,0 +1,39 @@
+---
+import { ArticleCard, Divider } from '@amigos-da-cruz/adc-design-system';
+import type { ArticleSummary } from '../lib/content';
+import { formatDate } from '../lib/content';
+
+interface Props {
+  articles: ArticleSummary[];
+  heading: string;
+  empty: string;
+}
+
+const { articles, heading, empty } = Astro.props;
+---
+
+<section class="articles-section" aria-labelledby="articles-heading">
+  <div class="section-heading">
+    <div>
+      <span class="adc-eyebrow">Publicações</span>
+      <h2 id="articles-heading">{heading}</h2>
+    </div>
+    <Divider />
+  </div>
+  {articles.length > 0 ? (
+    <div class="article-grid">
+      {articles.map((article) => (
+        <ArticleCard
+          href={`/artigos/${article.slug}`}
+          tipo={article.kind}
+          categoria={article.category}
+          titulo={article.title}
+          excerto={article.excerpt}
+          data={formatDate(article.publishedAt)}
+        />
+      ))}
+    </div>
+  ) : (
+    <div class="empty-state"><p>{empty}</p></div>
+  )}
+</section>

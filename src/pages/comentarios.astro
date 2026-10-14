@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleListing from '../components/ArticleListing.astro';
+import { getArticles } from '../lib/content';
+
+const articles = await getArticles('comentario');
+---
+
+<BaseLayout title="Comentários · Amigos da Cruz" description="Textos de análise e comentário dos Amigos da Cruz.">
+  <header class="page-heading page-container">
+    <span class="adc-eyebrow">Arquivo</span>
+    <h1>Comentários</h1>
+    <p>Análise e reflexão, identificadas como tal.</p>
+  </header>
+  <div class="page-container"><ArticleListing articles={articles} heading="Todos os comentários" empty="Ainda não há comentários publicados." /></div>
+</BaseLayout>

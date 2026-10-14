@@ -1,0 +1,27 @@
+---
+import { ArticleHeader, Divider } from '@amigos-da-cruz/adc-design-system';
+import { toHTML } from '@portabletext/to-html';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Sources } from '../../components/Sources';
+import { formatDate, getArticle } from '../../lib/content';
+
+const article = await getArticle(Astro.params.slug ?? '');
+if (!article) Astro.response.status = 404;
+const byline = article ? [article.author, formatDate(article.publishedAt)].filter(Boolean).join(' · ') : '';
+const body = article?.body ? toHTML(article.body) : '';
+---
+
+{article ? (
+  <BaseLayout title={`${article.title} · Amigos da Cruz`} description={article.excerpt}>
+    <article class="article-page">
+      <ArticleHeader tipo={article.kind} categoria={article.category} titulo={article.title} entrada={article.introduction || article.excerpt} autoria={byline} />
+      <div class="article-page__body adc-prose" set:html={body} />
+      {article.kind === 'noticia' && article.sources && article.sources.length > 0 && <Sources sources={article.sources} />}
+      <div class="article-page__end"><Divider /><a href="/">← Voltar às publicações</a></div>
+    </article>
+  </BaseLayout>
+) : (
+  <BaseLayout title="Artigo não encontrado · Amigos da Cruz">
+    <div class="page-heading page-container"><h1>Artigo não encontrado</h1><p>Esta publicação não existe ou ainda não está publicada.</p><a href="/">Voltar ao início</a></div>
+  </BaseLayout>
+)}
