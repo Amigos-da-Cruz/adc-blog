@@ -4,6 +4,7 @@ import { renderBody } from '../../lib/renderBody';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { Sources } from '../../components/Sources';
 import Comments from '../../components/Comments.astro';
+import ArticleShare from '../../components/ArticleShare.astro';
 import { formatDate, getArticle } from '../../lib/content';
 
 const article = await getArticle(Astro.params.slug ?? '');
@@ -13,9 +14,10 @@ const body = article?.body ? renderBody(article.body) : '';
 ---
 
 {article ? (
-  <BaseLayout title={`${article.title} · Amigos da Cruz`} description={article.excerpt}>
+  <BaseLayout ogType="article" title={`${article.title} · Amigos da Cruz`} description={article.excerpt}>
     <article class="article-page">
       <ArticleHeader tipo={article.kind} categoria={article.category} titulo={article.title} entrada={article.introduction || article.excerpt} autoria={byline} />
+      <ArticleShare title={article.title} />
       <div class="article-page__body adc-prose" set:html={body} />
       {article.sources && article.sources.length > 0 && <Sources sources={article.sources} />}
       <Comments slug={article.slug} />

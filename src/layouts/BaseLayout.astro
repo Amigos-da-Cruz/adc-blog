@@ -1,20 +1,23 @@
 ---
 import { Logo } from '@amigos-da-cruz/adc-design-system';
+import Analytics from '@vercel/analytics/astro';
 import '@amigos-da-cruz/adc-design-system/style.css';
 import '../styles/site.css';
 
 interface Props {
   title?: string;
   description?: string;
+  ogType?: 'website' | 'article';
 }
 
 const {
   title = 'Blogue · Amigos da Cruz',
   description = 'Notícias e comentários dos Amigos da Cruz, com atenção às fontes e à tradição da Igreja.',
 } = Astro.props;
+const { ogType = 'website' } = Astro.props;
 const current = Astro.url.pathname;
 const baseUrl = import.meta.env.PUBLIC_SITE_URL;
-const canonical = baseUrl ? new URL(current, baseUrl).toString() : undefined;
+const canonical = new URL(current, baseUrl || Astro.url.origin).toString();
 ---
 
 <!doctype html>
@@ -23,7 +26,15 @@ const canonical = baseUrl ? new URL(current, baseUrl).toString() : undefined;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:site_name" content="Amigos da Cruz" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <Analytics />
     <title>{title}</title>
   </head>
   <body>

@@ -53,3 +53,9 @@ O Atlas Free tem **0,5 GB de armazenamento** e pode pausar um cluster sem ligaç
 Importar `Amigos-da-Cruz/adc-blog` na Vercel com a diretoria raiz do projeto. A Vercel deteta Astro; manter `npm run build` como comando de build. Definir `SANITY_PROJECT_ID`, `SANITY_DATASET=production` e `PUBLIC_SITE_URL` com o domínio final. A aplicação usa o adaptador `@astrojs/vercel` e renderização no servidor.
 
 Ver [ARCHITECTURE.md](ARCHITECTURE.md) para o desenho técnico e as próximas etapas.
+
+## Partilha e analytics
+
+Cada artigo tem um botão de partilha junto ao cabeçalho que abre opções para WhatsApp, Facebook, LinkedIn e copiar o URL. Em dispositivos que suportam a partilha nativa, também apresenta Mais aplicações; o Instagram só surge se aceitar o URL nesse dispositivo. Para Stories, o leitor pode copiar a ligação e adicioná-la no Instagram. Os metadados Open Graph usam o título e o resumo do artigo. Definir PUBLIC_SITE_URL=https://blog.amigosdacruz.pt na Vercel para que as ligações e os URL canónicos apontem para o domínio definitivo.
+
+O blogue usa Vercel Web Analytics para medir visitas e páginas mais lidas. Em Vercel → projeto → Analytics, clicar em Enable e publicar a versão com @vercel/analytics. Não são necessárias variáveis de ambiente adicionais. O painel mostra dados de produção depois de receber visitas.

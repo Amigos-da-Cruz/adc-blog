@@ -52,6 +52,20 @@ body { margin: 0; }
 .article-instagram span { color: var(--brand); font: 600 12px/18px var(--font-support); letter-spacing: .1em; text-transform: uppercase; }
 .article-instagram p { margin: 12px 0; }
 .article-instagram a { display: inline-block; margin-top: 12px; font: 500 15px/22px var(--font-support); }
+.article-share { max-width: var(--measure-wide); margin: -20px auto 28px; padding-inline: var(--space-5); display: flex; justify-content: flex-end; }
+.article-share__details { position: relative; z-index: 2; }
+.article-share__trigger { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); color: var(--brand); font: 600 13px/20px var(--font-support); cursor: pointer; list-style: none; }
+.article-share__trigger::-webkit-details-marker { display: none; }
+.article-share__trigger:hover, .article-share__details[open] .article-share__trigger { border-color: var(--brand); background: var(--surface-raised); }
+.article-share__trigger:focus-visible, .article-share__popover a:focus-visible, .article-share__popover button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.article-share__popover { position: absolute; top: calc(100% + 8px); right: 0; width: min(250px, calc(100vw - 48px)); padding: 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); box-shadow: 0 12px 30px rgb(0 0 0 / 12%); }
+.article-share__heading { margin: 4px 8px 8px; color: var(--ink-muted); font: 600 12px/18px var(--font-support); letter-spacing: .06em; text-transform: uppercase; }
+.article-share__popover a, .article-share__popover button { display: block; width: 100%; box-sizing: border-box; padding: 10px 8px; border: 0; border-radius: 3px; background: transparent; color: var(--ink); font: 500 14px/20px var(--font-support); text-align: left; text-decoration: none; cursor: pointer; }
+.article-share__popover a:hover, .article-share__popover button:hover { background: var(--surface-raised); color: var(--brand); }
+.article-share__popover button[hidden] { display: none; }
+.article-share__hint { margin: 8px 8px 4px; color: var(--ink-muted); font: 400 12px/18px var(--font-support); }
+.article-share__status { margin: 6px 8px 2px; color: var(--ink-muted); font: 400 13px/20px var(--font-support); }
+.article-share__status:empty { display: none; }
 .article-comments { max-width: var(--measure-text); margin: 76px auto 0; padding: 0 24px; }
 .article-comments h2 { margin: 0 0 14px; font: 700 clamp(30px, 3vw, 42px)/1.2 var(--font-display); }
 .article-comments__intro { color: var(--ink-muted); font: 400 16px/26px var(--font-text); }

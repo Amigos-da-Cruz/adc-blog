@@ -1,0 +1,78 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const url = new URL(Astro.url.pathname, import.meta.env.PUBLIC_SITE_URL || Astro.url.origin).toString();
+const message = title + ' ' + url;
+---
+
+<div class="article-share">
+  <details class="article-share__details">
+    <summary class="article-share__trigger">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="18" cy="5" r="2.5" />
+        <circle cx="6" cy="12" r="2.5" />
+        <circle cx="18" cy="19" r="2.5" />
+        <path d="m8.3 10.8 7.4-4.6M8.3 13.2l7.4 4.6" />
+      </svg>
+      <span>Partilhar</span>
+    </summary>
+    <div class="article-share__popover">
+      <p class="article-share__heading">Partilhar este artigo</p>
+      <a href={'https://api.whatsapp.com/send?text=' + encodeURIComponent(message)} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <a href={'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url)} target="_blank" rel="noopener noreferrer">Facebook</a>
+      <a href={'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url)} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <button type="button" data-native-share data-share-title={title} data-share-url={url} hidden>Mais aplicações…</button>
+      <button type="button" data-copy-article-link={url}>Copiar ligação</button>
+      <p class="article-share__hint">Para o Instagram, copia a ligação e adiciona-a a uma Story.</p>
+      <p class="article-share__status" data-copy-status role="status" aria-live="polite"></p>
+    </div>
+  </details>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('.article-share__details').forEach((details) => {
+    document.addEventListener('pointerdown', (event) => {
+      if (details.open && !details.contains(event.target as Node)) details.open = false;
+    });
+
+    details.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && details.open) {
+        details.open = false;
+        details.querySelector<HTMLElement>('summary')?.focus();
+      }
+    });
+
+    const nativeButton = details.querySelector<HTMLButtonElement>('[data-native-share]');
+    if (nativeButton && typeof navigator.share === 'function') {
+      nativeButton.hidden = false;
+      nativeButton.addEventListener('click', async () => {
+        const { shareTitle: title, shareUrl: url } = nativeButton.dataset;
+        if (!url) return;
+        try {
+          await navigator.share({ title, url });
+        } catch (error) {
+          if (error instanceof DOMException && error.name === 'AbortError') return;
+          const status = details.querySelector<HTMLElement>('[data-copy-status]');
+          if (status) status.textContent = 'Não foi possível abrir a partilha neste dispositivo.';
+        }
+      });
+    }
+
+    const button = details.querySelector<HTMLButtonElement>('[data-copy-article-link]');
+    button?.addEventListener('click', async () => {
+      const url = button.dataset.copyArticleLink;
+      if (!url) return;
+      const status = details.querySelector<HTMLElement>('[data-copy-status]');
+      try {
+        await navigator.clipboard.writeText(url);
+        if (status) status.textContent = 'Ligação copiada.';
+      } catch {
+        if (status) status.textContent = 'Não foi possível copiar automaticamente.';
+        window.prompt('Copia esta ligação:', url);
+      }
+    });
+  });
+</script>
