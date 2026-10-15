@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { slug } = Astro.props;
-const configured = Boolean(import.meta.env.MONGODB_URI && import.meta.env.MONGODB_DB && import.meta.env.COMMENTS_ADMIN_TOKEN && import.meta.env.TURNSTILE_SECRET_KEY && import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
+const configured = Boolean(import.meta.env.MONGODB_URI && import.meta.env.MONGODB_DB && import.meta.env.TURNSTILE_SECRET_KEY && import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
 ---
 
 <section id="comentarios" class="article-comments" aria-label="Comentários dos leitores">

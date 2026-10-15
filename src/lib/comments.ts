@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import { createHmac } from 'node:crypto';
 import { MongoClient, ObjectId, type Collection, type Db } from 'mongodb';
 import type { ReaderComment } from '@amigos-da-cruz/adc-design-system';
 
@@ -18,7 +18,7 @@ interface StoredComment {
 let clientPromise: Promise<MongoClient> | undefined;
 
 export function commentsConfigured(): boolean {
-  return Boolean(import.meta.env.MONGODB_URI && import.meta.env.MONGODB_DB && import.meta.env.TURNSTILE_SECRET_KEY && import.meta.env.PUBLIC_TURNSTILE_SITE_KEY && import.meta.env.COMMENTS_ADMIN_TOKEN);
+  return Boolean(import.meta.env.MONGODB_URI && import.meta.env.MONGODB_DB && import.meta.env.TURNSTILE_SECRET_KEY && import.meta.env.PUBLIC_TURNSTILE_SITE_KEY);
 }
 
 async function database(): Promise<Db> {
@@ -55,20 +55,8 @@ export async function listArticleComments(articleId: string): Promise<ReaderComm
   return rows.map(present);
 }
 
-export async function listRecentComments() {
-  const db = await collection();
-  const rows = await db.find({}).sort({ createdAt: -1 }).limit(100).toArray();
-  return rows.map((row) => ({ ...present(row), articleSlug: row.articleSlug, articleTitle: row.articleTitle }));
-}
-
-export function adminAuthorized(token: string | null): boolean {
-  const expected = import.meta.env.COMMENTS_ADMIN_TOKEN;
-  if (!expected || !token || expected.length < 32 || Buffer.byteLength(token) !== Buffer.byteLength(expected)) return false;
-  return timingSafeEqual(Buffer.from(token), Buffer.from(expected));
-}
-
 export function visitorHash(address: string): string {
-  const secret = import.meta.env.COMMENTS_ADMIN_TOKEN!;
+  const secret = import.meta.env.TURNSTILE_SECRET_KEY!;
   return createHmac('sha256', secret).update(address).digest('hex');
 }
 
@@ -92,7 +80,6 @@ export async function createComment(input: {
   parentId: string | null;
   name: string;
   message: string;
-  authorRole: 'reader' | 'editor';
 }): Promise<ReaderComment> {
   const db = await collection();
   const parentObjectId = input.parentId && ObjectId.isValid(input.parentId) ? new ObjectId(input.parentId) : null;
@@ -110,16 +97,9 @@ export async function createComment(input: {
     name: input.name,
     message: input.message,
     createdAt: new Date(),
-    authorRole: input.authorRole,
+    authorRole: 'reader',
     status: 'published',
   };
   await db.insertOne(row);
   return present(row);
-}
-
-export async function hideComment(id: string): Promise<boolean> {
-  if (!ObjectId.isValid(id)) return false;
-  const db = await collection();
-  const result = await db.updateOne({ _id: new ObjectId(id) }, { $set: { status: 'hidden', name: '', message: '' } });
-  return result.matchedCount === 1;
 }

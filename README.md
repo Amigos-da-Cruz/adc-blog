@@ -27,27 +27,25 @@ No campo **Corpo**, é possível inserir parágrafos, ligações, imagens e bloc
 
 ## Comentários dos leitores
 
-Os comentários são publicados de imediato. A interface React [`CommentSection`](https://github.com/Amigos-da-Cruz/adc-design-system) é partilhada pelo design system; a API do blogue guarda as conversas no MongoDB Atlas. O Sanity continua apenas com os artigos editoriais. Leitores escrevem o nome e o comentário, podem responder uns aos outros e não precisam de criar conta. A equipa responde e oculta comentários em `/gerir-comentarios`.
+Os comentários são publicados de imediato. A interface React [`CommentSection`](https://github.com/Amigos-da-Cruz/adc-design-system) é partilhada pelo design system; a API do blogue guarda as conversas no MongoDB Atlas. O Sanity continua apenas com os artigos editoriais. Leitores escrevem o nome e o comentário, podem responder uns aos outros e não precisam de criar conta. Todos podem responder diretamente na página do artigo.
 
-Esta implementação usa endpoints HTTP pequenos: `GET/POST /api/comments` e `DELETE /api/comments/:id`. GraphQL acrescentaria configuração sem simplificar estas operações. Os comentários são texto simples, sem HTML, e a interface React escapa o conteúdo. Um comentário oculto perde o nome e o texto; a posição na conversa fica para preservar as respostas. Não há notificações por email nesta primeira versão.
+Esta implementação usa endpoints HTTP pequenos: `GET/POST /api/comments`. GraphQL acrescentaria configuração sem simplificar estas operações. Os comentários são texto simples, sem HTML, e a interface React escapa o conteúdo. Não há notificações por email nesta primeira versão.
 
 ### Configuração gratuita
 
 1. Criar um projeto e um cluster **Free** no [MongoDB Atlas](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/). Criar um utilizador da base de dados limitado a `readWrite` na base `adc_blog`. Copiar a URI de ligação com o nome e a palavra-passe do utilizador.
 2. Em **Network Access** do Atlas, permitir o acesso a partir da Vercel. A integração Atlas/Vercel documenta a permissão `0.0.0.0/0` para funções com IP dinâmico; proteger a ligação com credenciais fortes e um utilizador limitado à base do blogue. Para desenvolvimento local, permitir também a ligação da máquina.
 3. Criar um widget gratuito no [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/get-started/widget-management/dashboard/) para o domínio público do blogue. Copiar a site key e a secret key. Adicionar `localhost` ou usar as [chaves de teste](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) para desenvolvimento.
-4. Gerar uma chave editorial aleatória com pelo menos 32 bytes, por exemplo `node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"`. Guardá-la como `COMMENTS_ADMIN_TOKEN`.
-5. Definir as variáveis abaixo no `.env` local e na Vercel, em **Settings → Environment Variables**, e fazer um novo deploy:
+4. Definir as variáveis abaixo no `.env` local e na Vercel, em **Settings → Environment Variables**, e fazer um novo deploy:
 
 | Variável | Valor |
 | --- | --- |
 | `MONGODB_URI` | URI privada do Atlas |
 | `MONGODB_DB` | `adc_blog` |
-| `COMMENTS_ADMIN_TOKEN` | Chave editorial privada |
 | `PUBLIC_TURNSTILE_SITE_KEY` | Chave pública do widget |
 | `TURNSTILE_SECRET_KEY` | Chave privada do widget |
 
-A URI, a chave editorial e a chave secreta do Turnstile nunca devem ter prefixo `PUBLIC_`. Sem as cinco variáveis, o envio de comentários fica desativado. Em `/gerir-comentarios`, inserir a chave editorial para ver os últimos 100 comentários, responder ou ocultar. A chave fica apenas na memória da página e desaparece ao fechá-la. Partilhar esta chave apenas com editores autorizados.
+A URI e a chave secreta do Turnstile nunca devem ter prefixo `PUBLIC_`. Sem as quatro variáveis, o envio de comentários fica desativado. Todos os comentários e respostas são publicados automaticamente, sem aprovação prévia.
 
 O Atlas Free tem **0,5 GB de armazenamento** e pode pausar um cluster sem ligações após 30 dias de inatividade. O Turnstile Free permite desafios sem limite de volume publicado. Rever as condições atuais destes níveis gratuitos antes de ativar o serviço. O blogue guarda comentários e identificadores de rede resumidos em contadores temporários de dez minutos para limitar abuso; atualizar a política de privacidade antes de abrir os comentários ao público.
 ## Vercel

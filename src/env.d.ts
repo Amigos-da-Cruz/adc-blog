@@ -5,7 +5,6 @@ interface ImportMetaEnv {
   readonly SANITY_DATASET?: string;
   readonly MONGODB_URI?: string;
   readonly MONGODB_DB?: string;
-  readonly COMMENTS_ADMIN_TOKEN?: string;
   readonly TURNSTILE_SECRET_KEY?: string;
   readonly PUBLIC_TURNSTILE_SITE_KEY?: string;
   readonly PUBLIC_SITE_URL?: string;
